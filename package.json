@@ -12,6 +12,8 @@
 		"cf-typegen": "wrangler types"
 	},
 	"dependencies": {
+		"@cloudflare/sandbox": "^0.4.7",
+		"hono": "^4.10.2",
 		"react": "^19.2.0",
 		"react-dom": "^19.2.0"
 	},

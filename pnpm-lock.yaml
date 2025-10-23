@@ -8,6 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@cloudflare/sandbox':
+        specifier: ^0.4.7
+        version: 0.4.7
+      hono:
+        specifier: ^4.10.2
+        version: 4.10.2
       react:
         specifier: ^19.2.0
         version: 19.2.0
@@ -143,9 +149,15 @@ packages:
     resolution: {integrity: sha512-qQ5m48eI/MFLQ5PxQj4PFaprjyCTLI37ElWMmNs0K8Lk3dVeOdNpB3ks8jc7yM5CDmVC73eMVk/trk3fgmrUpA==}
     engines: {node: '>=6.9.0'}
 
+  '@cloudflare/containers@0.0.28':
+    resolution: {integrity: sha512-wzR9UWcGvZ9znd4elkXklilPcHX6srncsjSkx696SZRZyTygNbWsLlHegvc1C+e9gn28HRZU3dLiAzXiC9IY1w==}
+
   '@cloudflare/kv-asset-handler@0.4.0':
     resolution: {integrity: sha512-+tv3z+SPp+gqTIcImN9o0hqE9xyfQjI1XD9pL6NuKjua9B1y7mNYv0S9cP+QEbA4ppVgGZEmKOvHX5G5Ei1CVA==}
     engines: {node: '>=18.0.0'}
+
+  '@cloudflare/sandbox@0.4.7':
+    resolution: {integrity: sha512-kBnPJMecb9NyMY0ATHLIMXpCM75h5CGmpa6q95cqGOuj0Gp53HojwC9aX4UVwa+jY7WGos08oE9LRQRokX77BA==}
 
   '@cloudflare/unenv-preset@2.7.8':
     resolution: {integrity: sha512-Ky929MfHh+qPhwCapYrRPwPVHtA2Ioex/DbGZyskGyNRDe9Ru3WThYZivyNVaPy5ergQSgMs9OKrM9Ajtz9F6w==}
@@ -1209,6 +1221,10 @@ packages:
   hermes-parser@0.25.1:
     resolution: {integrity: sha512-6pEjquH3rqaI6cYAXYPcz9MS4rY6R4ngRgrgfDshRptUZIc3lw0MCIJIGDj9++mfySOuPTHB4nrSW99BCvOPIA==}
 
+  hono@4.10.2:
+    resolution: {integrity: sha512-p6fyzl+mQo6uhESLxbF5WlBOAJMDh36PljwlKtP5V1v09NxlqGru3ShK+4wKhSuhuYf8qxMmrivHOa/M7q0sMg==}
+    engines: {node: '>=16.9.0'}
+
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
     engines: {node: '>= 4'}
@@ -1734,9 +1750,15 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
 
+  '@cloudflare/containers@0.0.28': {}
+
   '@cloudflare/kv-asset-handler@0.4.0':
     dependencies:
       mime: 3.0.0
+
+  '@cloudflare/sandbox@0.4.7':
+    dependencies:
+      '@cloudflare/containers': 0.0.28
 
   '@cloudflare/unenv-preset@2.7.8(unenv@2.0.0-rc.21)(workerd@1.20251011.0)':
     dependencies:
@@ -2655,6 +2677,8 @@ snapshots:
   hermes-parser@0.25.1:
     dependencies:
       hermes-estree: 0.25.1
+
+  hono@4.10.2: {}
 
   ignore@5.3.2: {}
 
