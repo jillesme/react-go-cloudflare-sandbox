@@ -1,14 +1,15 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 
 function App() {
   const [name, setName] = useState('unknown')
+  const [sessionId, setSessionId] = useState('')
   const [goCode, setGoCode] = useState(`package main
 
 import "fmt"
 
 func Hello() string {
-	return "Hello, Cloudflare Sandbox!"
+	return "Hello, world!"
 }
 
 func main() {
@@ -22,13 +23,22 @@ func main() {
   } | null>(null)
   const [loading, setLoading] = useState(false)
 
+  // Initialize or retrieve session ID from localStorage
+  useEffect(() => {
+    let storedSessionId = localStorage.getItem('goSessionId')
+    if (!storedSessionId) {
+      storedSessionId = Math.random().toString(36).substring(2, 15)
+      localStorage.setItem('goSessionId', storedSessionId)
+    }
+    setSessionId(storedSessionId)
+  }, [])
+
   const runGoCode = async () => {
     setLoading(true)
     try {
       const formData = new FormData()
       formData.append('code', goCode)
 
-      const sessionId = Math.random().toString(36).substring(7)
       const response = await fetch(`/run/${sessionId}`, {
         method: 'POST',
         body: formData
@@ -64,6 +74,26 @@ func main() {
       </div>
 
       <div className='card'>
+        <div style={{ marginBottom: '15px' }}>
+          <label htmlFor='session-id' style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+            Session ID:
+          </label>
+          <input
+            id='session-id'
+            type='text'
+            value={sessionId}
+            disabled
+            style={{
+              width: '100%',
+              padding: '8px',
+              fontFamily: 'monospace',
+              border: '1px solid #444',
+              borderRadius: '4px',
+              cursor: 'not-allowed'
+            }}
+          />
+        </div>
+
         <textarea
           value={goCode}
           onChange={(e) => setGoCode(e.target.value)}

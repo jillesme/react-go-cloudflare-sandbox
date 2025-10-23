@@ -30,6 +30,9 @@ COPY docker/template/*.go /workspace/template/
 
 # Warm up Go build cache by running a test during container build
 # This pre-compiles standard library packages (strings, testing, etc.)
+# Run twice to ensure test cache and build cache are fully warmed
 RUN cd /workspace/template && \
+    go test -v && \
+    go mod tidy && \
     go test -v && \
     echo "✓ Go build cache warmed up"

@@ -46,21 +46,22 @@ app.post("/run/:session", async (c) => {
 
   const sandbox = getSandbox(c.env.Sandbox, "go-executor-sandbox")
 
-  // Create workspace directory for this session
+  // Create workspace directory for this session (idempotent)
   const workspaceDir = `/workspace/session-${session}`;
   await sandbox.mkdir(workspaceDir, { recursive: true });
 
-  // Write the user's Go code to hello.go
-  await sandbox.writeFile(`${workspaceDir}/hello.go`, code);
+  // Write files in parallel for faster setup
+  await Promise.all([
+    sandbox.writeFile(`${workspaceDir}/hello.go`, code),
+    sandbox.writeFile(`${workspaceDir}/hello_test.go`, template),
+    // Copy pre-initialized go.mod and go.sum from template (much faster than go mod init)
+    sandbox.exec(`cp /workspace/template/go.* ${workspaceDir}/`)
+  ]);
 
-  // Write the test file from template
-  await sandbox.writeFile(`${workspaceDir}/hello_test.go`, template);
-
-  // Copy pre-initialized go.mod from template (much faster than go mod init)
-  await sandbox.exec(`cp /workspace/template/go.mod ${workspaceDir}/go.mod`);
-
-  // Run go test
-  const result = await sandbox.exec(`cd ${workspaceDir} && go test -v`);
+  // Run go test with optimized flags:
+  // -count=1: disable test caching to ensure fresh results
+  // -failfast: stop on first failure for faster feedback
+  const result = await sandbox.exec(`cd ${workspaceDir} && go test -v -count=1 -failfast`);
 
   return c.json({
     stdout: result.stdout,
