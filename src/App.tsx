@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react'
-import Editor from 'react-simple-code-editor'
-import { highlight, languages } from 'prismjs'
-import 'prismjs/components/prism-go'
-import 'prismjs/themes/prism-tomorrow.css'
+import CodeEditor from './components/CodeEditor'
+import TestResults from './components/TestResults'
 import './App.css'
 
 function App() {
@@ -12,7 +10,7 @@ function App() {
 import "fmt"
 
 func Hello() string {
-	return "Hello, Cloudflare Sandbox!"
+	return "Hello, Cloudflare Sandbox?"
 }
 
 func main() {
@@ -58,79 +56,16 @@ func main() {
 
   return (
     <>
-      <h1 style={{ margin: '10px 0', fontSize: '24px' }}>Go Code Evaluator</h1>
+      <h1 className="app-title">Go Code Evaluator</h1>
 
-      <div className='card' style={{ padding: '10px' }}>
-        <Editor
-          value={goCode}
-          onValueChange={setGoCode}
-          highlight={(code) => highlight(code, languages.go, 'go')}
-          padding={8}
-          style={{
-            fontFamily: '"Fira code", "Fira Mono", monospace',
-            fontSize: 13,
-            marginBottom: '8px',
-            border: '1px solid #444',
-            borderRadius: '4px',
-            minHeight: '280px'
-          }}
-        />
-        <button onClick={runGoCode} disabled={loading} style={{ marginBottom: '10px' }}>
+      <div className="app-card">
+        <CodeEditor value={goCode} onChange={setGoCode} />
+
+        <button className="run-button" onClick={runGoCode} disabled={loading}>
           {loading ? '📦 Running...' : '🚀 Run Go Code'}
         </button>
 
-        {result && (
-          <div style={{ marginTop: '10px', textAlign: 'left' }}>
-            <div style={{
-              marginBottom: '10px',
-              padding: '10px 16px',
-              borderRadius: '6px',
-              fontWeight: 'bold',
-              fontSize: '16px',
-              textAlign: 'center',
-              backgroundColor: result.success ? '#00ff00' : '#ff0000',
-              color: '#000'
-            }}>
-              {result.success ? '✓ TESTS PASSED' : '✗ TESTS FAILED'}
-            </div>
-            {result.stdout && (
-              <div style={{ marginBottom: '8px' }}>
-                <strong style={{ fontSize: '14px' }}>Output:</strong>
-                <pre style={{
-                  background: '#1e1e1e',
-                  padding: '10px',
-                  borderRadius: '4px',
-                  whiteSpace: 'pre-wrap',
-                  margin: '4px 0',
-                  color: '#e0e0e0',
-                  fontSize: '12px',
-                  lineHeight: '1.4',
-                  border: '1px solid #333'
-                }}>
-                  {result.stdout}
-                </pre>
-              </div>
-            )}
-            {result.error && (
-              <div>
-                <strong style={{ fontSize: '14px' }}>Error:</strong>
-                <pre style={{
-                  background: '#2d1e1e',
-                  padding: '10px',
-                  borderRadius: '4px',
-                  whiteSpace: 'pre-wrap',
-                  margin: '4px 0',
-                  color: '#ff6b6b',
-                  fontSize: '12px',
-                  lineHeight: '1.4',
-                  border: '1px solid #5a3333'
-                }}>
-                  {result.error}
-                </pre>
-              </div>
-            )}
-          </div>
-        )}
+        {result && <TestResults result={result} />}
       </div>
     </>
   )

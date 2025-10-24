@@ -1,0 +1,53 @@
+.test-results {
+  margin-top: 10px;
+  text-align: left;
+}
+
+.status-badge {
+  margin-bottom: 10px;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+  color: #000;
+}
+
+.status-badge.success {
+  background-color: #00ff00;
+}
+
+.status-badge.failure {
+  background-color: #ff0000;
+}
+
+.output-section,
+.error-section {
+  margin-bottom: 8px;
+}
+
+.output-label {
+  font-size: 14px;
+}
+
+.output-content,
+.error-content {
+  background: #1e1e1e;
+  padding: 10px;
+  border-radius: 4px;
+  white-space: pre-wrap;
+  margin: 4px 0;
+  font-size: 12px;
+  line-height: 1.4;
+  border: 1px solid #333;
+}
+
+.output-content {
+  color: #e0e0e0;
+}
+
+.error-content {
+  background: #2d1e1e;
+  color: #ff6b6b;
+  border: 1px solid #5a3333;
+}
