@@ -1,5 +1,4 @@
 import { getSandbox, type Sandbox } from "@cloudflare/sandbox";
-import { WorkerEntrypoint, env } from "cloudflare:workers";
 import { Hono } from "hono";
 
 type Env = {
