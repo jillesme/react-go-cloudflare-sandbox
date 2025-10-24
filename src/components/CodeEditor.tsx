@@ -1,7 +1,7 @@
 import Editor from 'react-simple-code-editor'
 import { highlight, languages } from 'prismjs'
 import 'prismjs/components/prism-go'
-import 'prismjs/themes/prism-tomorrow.css'
+import 'prismjs/themes/prism-okaidia.css'
 import './CodeEditor.css'
 
 interface CodeEditorProps {

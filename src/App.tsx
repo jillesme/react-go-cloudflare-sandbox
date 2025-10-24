@@ -10,7 +10,7 @@ function App() {
 import "fmt"
 
 func Hello() string {
-	return "Hello, Cloudflare Sandbox?"
+	return "Hello, world!"
 }
 
 func main() {
