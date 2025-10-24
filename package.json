@@ -1,5 +1,5 @@
 {
-	"name": "my-react-go-sandbox",
+	"name": "jilles-react-go-sandbox",
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
@@ -14,8 +14,10 @@
 	"dependencies": {
 		"@cloudflare/sandbox": "^0.4.7",
 		"hono": "^4.10.2",
+		"prismjs": "^1.30.0",
 		"react": "^19.2.0",
-		"react-dom": "^19.2.0"
+		"react-dom": "^19.2.0",
+		"react-simple-code-editor": "^0.14.1"
 	},
 	"devDependencies": {
 		"@cloudflare/vite-plugin": "^1.13.15",

@@ -1,4 +1,4 @@
-import { getSandbox, proxyToSandbox, type Sandbox } from "@cloudflare/sandbox";
+import { getSandbox, type Sandbox } from "@cloudflare/sandbox";
 import { WorkerEntrypoint, env } from "cloudflare:workers";
 import { Hono } from "hono";
 
@@ -42,15 +42,12 @@ app.post("/run/:session", async (c) => {
   const body = await c.req.formData();
   const code = body.get('code') as string;
 
- // TODO: Check KV for existing session or throw 400
-
   const sandbox = getSandbox(c.env.Sandbox, "go-executor-sandbox")
 
   // Create workspace directory for this session (idempotent)
   const workspaceDir = `/workspace/session-${session}`;
   await sandbox.mkdir(workspaceDir, { recursive: true });
 
-  // Write files in parallel for faster setup
   await Promise.all([
     sandbox.writeFile(`${workspaceDir}/hello.go`, code),
     sandbox.writeFile(`${workspaceDir}/hello_test.go`, template),
@@ -71,11 +68,8 @@ app.post("/run/:session", async (c) => {
   });
 })
 
-export default class Worker extends WorkerEntrypoint<Env> {
-  fetch(request: Request): Response | Promise<Response> {
-    return app.fetch(request, env);
-  }
-}
+
+export default app;
 
 // Export the Sandbox 
 export { Sandbox } from "@cloudflare/sandbox";

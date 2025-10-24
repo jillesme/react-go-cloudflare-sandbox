@@ -1,15 +1,18 @@
 import { useState, useEffect } from 'react'
+import Editor from 'react-simple-code-editor'
+import { highlight, languages } from 'prismjs'
+import 'prismjs/components/prism-go'
+import 'prismjs/themes/prism-tomorrow.css'
 import './App.css'
 
 function App() {
-  const [name, setName] = useState('unknown')
   const [sessionId, setSessionId] = useState('')
   const [goCode, setGoCode] = useState(`package main
 
 import "fmt"
 
 func Hello() string {
-	return "Hello, world!"
+	return "Hello, Cloudflare Sandbox!"
 }
 
 func main() {
@@ -55,73 +58,53 @@ func main() {
 
   return (
     <>
-      <h1>Go Code Evaluator</h1>
+      <h1 style={{ margin: '10px 0', fontSize: '24px' }}>Go Code Evaluator</h1>
 
-      <div className='card'>
-        <button
-          onClick={() => {
-            fetch('/api/')
-              .then((res) => res.json() as Promise<{ name: string }>)
-              .then((data) => setName(data.name))
-          }}
-          aria-label='get name'
-        >
-          Name from API is: {name}
-        </button>
-        <p>
-          Edit <code>worker/index.ts</code> to change the name
-        </p>
-      </div>
-
-      <div className='card'>
-        <div style={{ marginBottom: '15px' }}>
-          <label htmlFor='session-id' style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
-            Session ID:
-          </label>
-          <input
-            id='session-id'
-            type='text'
-            value={sessionId}
-            disabled
-            style={{
-              width: '100%',
-              padding: '8px',
-              fontFamily: 'monospace',
-              border: '1px solid #444',
-              borderRadius: '4px',
-              cursor: 'not-allowed'
-            }}
-          />
-        </div>
-
-        <textarea
+      <div className='card' style={{ padding: '10px' }}>
+        <Editor
           value={goCode}
-          onChange={(e) => setGoCode(e.target.value)}
-          rows={15}
-          style={{ width: '100%', fontFamily: 'monospace', padding: '10px' }}
+          onValueChange={setGoCode}
+          highlight={(code) => highlight(code, languages.go, 'go')}
+          padding={8}
+          style={{
+            fontFamily: '"Fira code", "Fira Mono", monospace',
+            fontSize: 13,
+            marginBottom: '8px',
+            border: '1px solid #444',
+            borderRadius: '4px',
+            minHeight: '280px'
+          }}
         />
-        <button onClick={runGoCode} disabled={loading}>
-          {loading ? 'Running...' : 'Run Go Code'}
+        <button onClick={runGoCode} disabled={loading} style={{ marginBottom: '10px' }}>
+          {loading ? '📦 Running...' : '🚀 Run Go Code'}
         </button>
 
         {result && (
-          <div style={{ marginTop: '20px', textAlign: 'left' }}>
-            <h3>Result:</h3>
-            <div style={{ marginBottom: '10px' }}>
-              <strong>Exit Code:</strong> {result.exitCode} | <strong>Success:</strong> {result.success ? 'Yes' : 'No'}
+          <div style={{ marginTop: '10px', textAlign: 'left' }}>
+            <div style={{
+              marginBottom: '10px',
+              padding: '10px 16px',
+              borderRadius: '6px',
+              fontWeight: 'bold',
+              fontSize: '16px',
+              textAlign: 'center',
+              backgroundColor: result.success ? '#00ff00' : '#ff0000',
+              color: '#000'
+            }}>
+              {result.success ? '✓ TESTS PASSED' : '✗ TESTS FAILED'}
             </div>
             {result.stdout && (
-              <div style={{ marginBottom: '10px' }}>
-                <strong>Output:</strong>
+              <div style={{ marginBottom: '8px' }}>
+                <strong style={{ fontSize: '14px' }}>Output:</strong>
                 <pre style={{
                   background: '#1e1e1e',
-                  padding: '15px',
-                  borderRadius: '5px',
+                  padding: '10px',
+                  borderRadius: '4px',
                   whiteSpace: 'pre-wrap',
-                  margin: '5px 0',
+                  margin: '4px 0',
                   color: '#e0e0e0',
-                  fontSize: '14px',
-                  lineHeight: '1.5',
+                  fontSize: '12px',
+                  lineHeight: '1.4',
                   border: '1px solid #333'
                 }}>
                   {result.stdout}
@@ -130,16 +113,16 @@ func main() {
             )}
             {result.error && (
               <div>
-                <strong>Error:</strong>
+                <strong style={{ fontSize: '14px' }}>Error:</strong>
                 <pre style={{
                   background: '#2d1e1e',
-                  padding: '15px',
-                  borderRadius: '5px',
+                  padding: '10px',
+                  borderRadius: '4px',
                   whiteSpace: 'pre-wrap',
-                  margin: '5px 0',
+                  margin: '4px 0',
                   color: '#ff6b6b',
-                  fontSize: '14px',
-                  lineHeight: '1.5',
+                  fontSize: '12px',
+                  lineHeight: '1.4',
                   border: '1px solid #5a3333'
                 }}>
                   {result.error}
